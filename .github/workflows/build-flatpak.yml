@@ -1,0 +1,33 @@
+name: Build and Upload Flatpak
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: Build Flatpak
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      options: --privileged
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Flatpak and flatpak-builder
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: Edgeware++.flatpak
+          manifest-path: flatpak/io.github.araten10.EdgewarePlusPlus.yml
+
+      - name: Upload Flatpak to release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: Edgeware++.flatpak
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
