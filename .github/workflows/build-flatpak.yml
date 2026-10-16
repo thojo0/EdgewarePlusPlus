@@ -9,7 +9,7 @@ jobs:
     name: Build Flatpak (${{ matrix.variant.arch }})
     runs-on: ${{ matrix.variant.runner }}
     container:
-      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-48
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
       options: --privileged
 
     strategy:
